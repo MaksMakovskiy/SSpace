@@ -1,0 +1,128 @@
+/* «Ангелы»: silver nanotech. Platinum glass panels with chrome edges and a fine nanite grain, windows that rise up and
+   assemble out of particles, chrome buttons with a passing specular glint, and now and then a crimson alert pulse.
+   Over the 3D view: drifting streams of nanites and a rare crimson ping (drawn by the theme's fx in main.js). */
+
+:root {
+  --silver: #c9d1dc; --chrome-hi: #ffffff; --steel: #8e9bb0; --crimson: #ff1f4a; --crimson-rgb: 255, 31, 74;
+  --grain: radial-gradient(circle, rgba(90, 104, 128, .16) 0.7px, transparent 1px);
+}
+::selection { background: rgba(var(--crimson-rgb), .28); }
+
+/* ---------- platinum glass panels ---------- */
+.win {
+  background: var(--grain) 0 0 / 6px 6px, linear-gradient(160deg, rgba(250, 252, 255, .9), rgba(226, 231, 238, .82) 55%, rgba(214, 220, 229, .86));
+  backdrop-filter: blur(14px) saturate(1.15); -webkit-backdrop-filter: blur(14px) saturate(1.15);
+  border: 1px solid rgba(255, 255, 255, .9); border-radius: 14px;
+  box-shadow: 0 0 0 1px rgba(120, 134, 158, .55), inset 0 1px 0 #fff, inset 0 -1px 0 rgba(120, 134, 158, .35), 0 18px 46px rgba(20, 30, 50, .35), 0 0 26px rgba(200, 215, 235, .35);
+}
+.win.dragging { box-shadow: 0 0 0 1px rgba(var(--crimson-rgb), .7), 0 0 22px rgba(var(--crimson-rgb), .35), 0 24px 60px rgba(20, 30, 50, .4); }
+/* windows rise and assemble out of nanites */
+.win:not([hidden]) { animation: na-rise .75s cubic-bezier(.16, .9, .2, 1) backwards; }
+@keyframes na-rise { 0% { opacity: 0; transform: translateY(26px) scale(.965); filter: blur(7px) brightness(1.6) contrast(1.6) } 60% { opacity: 1; filter: blur(0) brightness(1.08) } 100% { transform: none; filter: none } }
+.win::after, .bigd::after, .genx::after {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 6;
+  background: radial-gradient(circle, rgba(255, 255, 255, .95) 0.9px, transparent 1.3px) 0 0 / 7px 7px, linear-gradient(180deg, rgba(220, 232, 255, .55), transparent);
+  -webkit-mask-image: linear-gradient(180deg, #000, transparent); mask-image: linear-gradient(180deg, #000, transparent);
+  -webkit-mask-size: 100% 300%; mask-size: 100% 300%; opacity: 0; animation: na-swarm 1s ease-out;
+}
+@keyframes na-swarm { 0% { opacity: 1; -webkit-mask-position: 0 100%; mask-position: 0 100%; background-position: 0 0, 0 0 } 100% { opacity: 0; -webkit-mask-position: 0 0; mask-position: 0 0; background-position: 0 -30px, 0 0 } }
+/* a chrome sheen that keeps sliding along the top edge */
+.win::before { content: ''; position: absolute; left: 14px; right: 14px; top: 0; height: 1px; z-index: 6; pointer-events: none; background: linear-gradient(90deg, transparent, #fff, transparent); background-size: 30% 100%; background-repeat: no-repeat; animation: na-edge 5.5s ease-in-out infinite; }
+.win:nth-child(2n)::before { animation-delay: -1.8s; } .win:nth-child(3n)::before { animation-delay: -3.6s; }
+@keyframes na-edge { from { background-position: -30% 0 } to { background-position: 130% 0 } }
+
+/* the crimson alert (the theme's fx adds .na-alert to a panel now and then) */
+.na-alert { animation: na-alert 1.5s ease-in-out !important; }
+@keyframes na-alert {
+  0%, 100% { box-shadow: 0 0 0 1px rgba(120, 134, 158, .55), 0 18px 46px rgba(20, 30, 50, .35) }
+  15%, 45%, 75% { box-shadow: 0 0 0 1px var(--crimson), 0 0 0 4px rgba(var(--crimson-rgb), .18), 0 0 34px rgba(var(--crimson-rgb), .55), 0 18px 46px rgba(20, 30, 50, .35) }
+  30%, 60% { box-shadow: 0 0 0 1px rgba(var(--crimson-rgb), .4), 0 18px 46px rgba(20, 30, 50, .35) }
+}
+.na-alert .win-head::after { background: var(--crimson) !important; box-shadow: 0 0 10px var(--crimson) !important; }
+
+/* ---------- headers ---------- */
+.win-head { position: relative; background: linear-gradient(180deg, rgba(255, 255, 255, .95), rgba(236, 240, 246, .55)); border-bottom: 1px solid rgba(120, 134, 158, .35); border-radius: 14px 14px 0 0; }
+.win-title, .bigd-title b, .genx-title b { font-family: var(--font-display); font-weight: 500; text-transform: uppercase; letter-spacing: .22em; font-size: 11.5px; color: #2a3140; }
+/* a status light in every header: silver, sometimes crimson */
+.win-head::after { content: ''; position: absolute; right: 64px; top: 50%; width: 6px; height: 6px; margin-top: -3px; border-radius: 50%; background: var(--steel); box-shadow: 0 0 6px rgba(142, 155, 176, .9); animation: na-led 9s steps(1) infinite; }
+.win:nth-child(2n) .win-head::after { animation-delay: -3s; } .win:nth-child(3n) .win-head::after { animation-delay: -6s; }
+@keyframes na-led { 0%, 88% { background: var(--steel); box-shadow: 0 0 6px rgba(142, 155, 176, .9) } 89%, 91%, 93% { background: var(--crimson); box-shadow: 0 0 10px var(--crimson) } 90%, 92% { background: #5a1020 } }
+.win-head::before { content: ''; position: absolute; left: 0; bottom: -1px; width: 38px; height: 2px; background: linear-gradient(90deg, var(--crimson), transparent); }
+
+/* ---------- big dialogs ---------- */
+.bigd, .genx { position: relative; background: var(--grain) 0 0 / 6px 6px, linear-gradient(165deg, rgba(250, 252, 255, .97), rgba(226, 231, 238, .96));
+  border: 1px solid #fff; box-shadow: 0 0 0 1px rgba(120, 134, 158, .6), 0 0 0 6px rgba(255, 255, 255, .25), 0 30px 90px rgba(20, 30, 50, .45), 0 0 60px rgba(200, 215, 235, .4); border-radius: 18px; }
+.genx { position: absolute; }
+.bigd, .genx { animation: na-rise .7s cubic-bezier(.16, .9, .2, 1) both; }
+.bigd-head, .genx-head { background: linear-gradient(180deg, #fff, rgba(240, 243, 248, .4)); border-bottom: 1px solid rgba(120, 134, 158, .3); position: relative; }
+.bigd-head::after, .genx-head::after { content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 1px; background: linear-gradient(90deg, transparent, var(--crimson), transparent); background-size: 25% 100%; background-repeat: no-repeat; animation: na-scan 4s ease-in-out infinite; }
+@keyframes na-scan { from { background-position: -25% 0 } to { background-position: 125% 0 } }
+.bigd-back, .genx-back { background: radial-gradient(ellipse at 50% 30%, rgba(210, 220, 235, .35), rgba(10, 14, 22, .55)); backdrop-filter: blur(4px); }
+.bigd-nav { background: linear-gradient(90deg, rgba(255, 255, 255, .5), transparent); }
+.bigd-tab.on { background: linear-gradient(90deg, rgba(255, 255, 255, .95), rgba(255, 255, 255, .3)); box-shadow: inset 3px 0 0 var(--crimson), 0 2px 10px rgba(20, 30, 50, .12); color: #1c2028; }
+
+/* ---------- menu bar ---------- */
+#menubar { background: linear-gradient(180deg, #fbfcfe, #dde2ea); box-shadow: inset 0 -1px 0 rgba(120, 134, 158, .5), inset 0 1px 0 #fff; }
+#menubar::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--crimson), transparent); background-size: 18% 100%; background-repeat: no-repeat; animation: na-scan 7s linear infinite; }
+.menu-title { letter-spacing: .08em; text-transform: uppercase; font-size: 11.5px; }
+.menu-drop, .ctx { background: var(--grain) 0 0 / 6px 6px, linear-gradient(170deg, rgba(252, 253, 255, .97), rgba(230, 234, 240, .96)); border: 1px solid #fff; border-radius: 12px; box-shadow: 0 0 0 1px rgba(120, 134, 158, .5), 0 16px 40px rgba(20, 30, 50, .3); backdrop-filter: blur(10px); animation: na-rise .35s cubic-bezier(.16, .9, .2, 1) both; }
+.menu-item:hover:not(:disabled) { background: linear-gradient(90deg, rgba(var(--crimson-rgb), .12), transparent 80%); box-shadow: inset 2px 0 0 var(--crimson); }
+.brand b { color: var(--crimson); text-shadow: 0 0 8px rgba(var(--crimson-rgb), .5); }
+
+/* ---------- chrome buttons ---------- */
+button { position: relative; overflow: hidden; background: linear-gradient(180deg, #ffffff, #e3e8ef 48%, #d3dae4 52%, #e9edf3); border-color: rgba(120, 134, 158, .55); border-radius: 9px; box-shadow: inset 0 1px 0 #fff, 0 1px 2px rgba(20, 30, 50, .15); transition: box-shadow .2s, transform .12s; }
+button:hover { box-shadow: inset 0 1px 0 #fff, 0 0 0 1px rgba(var(--crimson-rgb), .45), 0 0 12px rgba(var(--crimson-rgb), .25); }
+button:active { transform: translateY(1px); }
+button::after { content: ''; position: absolute; top: 0; bottom: 0; left: -70%; width: 45%; pointer-events: none; background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .85), transparent); transform: skewX(-18deg); transition: left .5s ease; }
+button:hover::after { left: 130%; }
+.swatches button::after, .ctx-swatches button::after, .fx-swatches button::after, .pal-del::after, .win-btn::after { display: none; }
+.swatches button, .ctx-swatches button, .fx-swatches button { border-radius: 6px; }
+button.primary, .bar-btn.on, .genx-chip.on { background: linear-gradient(180deg, #4b5566, #262c36 55%, #1c2028); border-color: #11141a; color: #f4f7fb; box-shadow: inset 0 1px 0 rgba(255, 255, 255, .25), 0 0 0 1px rgba(var(--crimson-rgb), .0), 0 4px 14px rgba(20, 30, 50, .35); }
+button.primary { border-bottom: 2px solid var(--crimson); }
+button.primary::after, .bar-btn.on::after { animation: na-glint 4.5s ease-in-out infinite; }
+@keyframes na-glint { 0%, 60% { left: -70% } 100% { left: 130% } }
+.bar-btn .ico, .bigd-tab .ico, .genx-card-ico, .fx-ico, .orbit-ico { color: #4b5566; }
+.bar-btn.on .ico { color: #fff; }
+.tb.on { background: linear-gradient(180deg, #fff, #dfe4ec); border-color: rgba(120, 134, 158, .7); box-shadow: inset 0 -2px 0 var(--crimson), 0 0 10px rgba(200, 215, 235, .8); }
+
+/* ---------- fields, sliders, sections ---------- */
+.field, select, input[type=number] { background: rgba(255, 255, 255, .8); border-color: rgba(120, 134, 158, .4); border-radius: 8px; box-shadow: inset 0 1px 2px rgba(20, 30, 50, .08); }
+.field:focus, select:focus { border-color: var(--crimson); box-shadow: 0 0 0 3px rgba(var(--crimson-rgb), .14); outline: none; }
+input[type=range] { -webkit-appearance: none; appearance: none; height: 16px; background: linear-gradient(180deg, #b9c2d0, #eef1f5) center / 100% 3px no-repeat; }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 15px; height: 15px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fff, #d8dee7 55%, #8e9bb0); border: 1px solid #7a879c; box-shadow: 0 0 0 3px rgba(255, 255, 255, .6), 0 2px 5px rgba(20, 30, 50, .3); }
+input[type=range]:active::-webkit-slider-thumb { box-shadow: 0 0 0 3px rgba(var(--crimson-rgb), .35), 0 0 10px rgba(var(--crimson-rgb), .5); }
+.sec > summary::before { border-left-color: var(--crimson); }
+.sec-title { color: #5a6578; letter-spacing: .18em; }
+.pal-row.sel, .poi-row.sel { background: linear-gradient(90deg, rgba(255, 255, 255, .95), rgba(255, 255, 255, .35)); border-color: rgba(120, 134, 158, .6); box-shadow: inset 3px 0 0 var(--crimson), 0 2px 10px rgba(20, 30, 50, .12); }
+.set-card, .mod-card, .genx-card, .theme-card, .fx-card, .gen-layer, .genx-side-sec { border-radius: 12px; border-color: rgba(120, 134, 158, .35); background: var(--grain) 0 0 / 6px 6px, linear-gradient(170deg, #fff, #eef1f5); box-shadow: inset 0 1px 0 #fff, 0 3px 14px rgba(20, 30, 50, .08); }
+.genx-card { transition: transform .2s, box-shadow .2s; }
+.genx-card:hover, .theme-card:hover, .mod-card:hover { transform: translateY(-3px); box-shadow: 0 0 0 1px rgba(var(--crimson-rgb), .35), 0 10px 26px rgba(20, 30, 50, .18); }
+.genx-card.on, .theme-card.on { box-shadow: 0 0 0 2px var(--crimson), 0 0 22px rgba(var(--crimson-rgb), .25); }
+
+/* ---------- status bar, toast, breadcrumbs ---------- */
+#statusbar { background: linear-gradient(180deg, #dde2ea, #f6f8fb); box-shadow: inset 0 1px 0 rgba(120, 134, 158, .45); }
+#toast { background: var(--grain) 0 0 / 6px 6px, linear-gradient(180deg, #fff, #e6eaf0); border: 1px solid #fff; border-radius: 10px; color: #1c2028; box-shadow: 0 0 0 1px rgba(120, 134, 158, .5), inset 3px 0 0 var(--crimson), 0 10px 30px rgba(20, 30, 50, .3); animation: na-rise .4s cubic-bezier(.16, .9, .2, 1); }
+#crumbs { background: linear-gradient(180deg, rgba(255, 255, 255, .92), rgba(226, 231, 238, .9)); border-color: rgba(120, 134, 158, .5); backdrop-filter: blur(8px); }
+.crumb-level { color: var(--crimson); }
+#zoomCtl button { border-radius: 50%; }
+
+/* ---------- nanites over the 3D view ---------- */
+.na-sky { position: absolute; inset: 0; pointer-events: none; z-index: 12; overflow: hidden; }
+.na-sky .stream { position: absolute; left: -20%; width: 140%; height: 40px; opacity: .55;
+  background: radial-gradient(circle, rgba(230, 238, 250, .95) 0.8px, transparent 1.2px) 0 0 / 11px 9px;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 30%, #000 70%, transparent), linear-gradient(180deg, transparent, #000, transparent);
+  -webkit-mask-composite: source-in; mask-image: linear-gradient(90deg, transparent, #000 30%, #000 70%, transparent); animation: na-flow linear infinite; }
+@keyframes na-flow { from { transform: translateX(-10%) skewY(var(--sk, -4deg)) } to { transform: translateX(10%) skewY(var(--sk, -4deg)) } }
+.na-sky .ping { position: absolute; left: 50%; top: 50%; width: 40px; height: 40px; margin: -20px 0 0 -20px; border-radius: 50%; border: 1.5px solid var(--crimson); opacity: 0; box-shadow: 0 0 18px rgba(var(--crimson-rgb), .6); }
+.na-sky .ping.go { animation: na-ping 2.2s ease-out; }
+@keyframes na-ping { 0% { opacity: .95; transform: scale(.2) } 100% { opacity: 0; transform: scale(18) } }
+.na-sky .edge { position: absolute; inset: 0; box-shadow: inset 0 0 120px rgba(200, 215, 235, .18); }
+
+/* cards are buttons too, but must not clip their content (that squashed the gallery) */
+.genx-card, .theme-card, .mod-card, .gen-item { overflow: visible; }
+.genx-card::after, .theme-card::after { display: none; }
+
+/* small icon buttons keep their size and centre (no pill padding, no sheen) */
+.bigd-close, .genx-close, .tb, .win-btn, #zoomCtl button { padding: 0; }
+.bigd-close::after, .genx-close::after, .tb::after, #zoomCtl button::after { display: none; }
+.tb-text { padding: 4px 2px; }

@@ -1,0 +1,23 @@
+{
+  "name": "sspace",
+  "version": "0.2.0",
+  "description": "SSpace — 3D-редактор гекс-планет с поддержкой модов",
+  "main": "main.js",
+  "author": "Maksym Makovskyi (Snvok) (https://github.com/MaksMakovskiy)",
+  "homepage": "https://github.com/MaksMakovskiy",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "smoke": "node scripts/smoke.js",
+    "selftest": "node scripts/selftest.js quick",
+    "selftest:full": "node scripts/selftest.js full",
+    "build": "node scripts/build.js"
+  },
+  "dependencies": {
+    "three": "0.128.0"
+  },
+  "devDependencies": {
+    "electron": "31.7.7"
+  }
+}

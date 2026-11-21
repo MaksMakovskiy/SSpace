@@ -1,0 +1,92 @@
+/* «Рой»: a living insect colony in brown and grey chitin. Carapace panels with uneven organic corners and plate
+   segments, a faint vein network, windows that hatch with a squish and keep breathing, twitching buttons, an abdomen-like
+   slider; honeycomb in the corners, drifting spores and beetles crawling over the view (fx in main.js). */
+
+:root {
+  --bio: #a8c45a; --bio-rgb: 168, 196, 90; --resin: #c9973e; --resin-rgb: 201, 151, 62;
+  --veins: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'><g fill='none' stroke='%23c9b28a' stroke-opacity='.07' stroke-width='1.2'><path d='M0 120C30 110 45 90 60 60s40-50 100-55'/><path d='M60 60c-10-20-30-30-55-30M60 60c20 10 35 35 40 70M100 130c15-5 35-5 60 5M30 115c-5 15-5 30 5 45'/><path d='M120 8c-5 20 0 40 20 52'/></g></svg>");
+  --plates: repeating-linear-gradient(90deg, rgba(255, 235, 200, .05) 0 1px, transparent 1px 34px);
+}
+::selection { background: rgba(var(--resin-rgb), .4); }
+
+/* ---------- carapace panels ---------- */
+.win, .bigd, .genx, .menu-drop, .ctx {
+  background: var(--veins) 0 0 / 160px 160px, radial-gradient(ellipse at 30% -10%, rgba(255, 230, 190, .1), transparent 60%), linear-gradient(170deg, rgba(52, 45, 37, .96), rgba(30, 26, 22, .97));
+  border: 1px solid rgba(160, 130, 90, .55); border-radius: 24px 9px 24px 9px / 18px 7px 18px 7px;
+  box-shadow: 0 0 0 3px rgba(15, 12, 10, .85), 0 0 0 4px rgba(120, 98, 70, .35), inset 0 1px 0 rgba(255, 235, 200, .12), inset 0 -8px 20px rgba(0, 0, 0, .35), 0 18px 46px rgba(0, 0, 0, .6);
+}
+.bigd { border-radius: 40px 14px 40px 14px / 30px 10px 30px 10px; }
+.genx { border-radius: 34px 12px 34px 12px / 26px 9px 26px 9px; }
+/* hatching, then breathing */
+.win:not([hidden]) { animation: sw-hatch .7s cubic-bezier(.34, 1.56, .64, 1) backwards; transform-origin: 20% 0; }
+/* breathing is a glow on a separate layer: scaling the whole window made its text shimmer and the window look jerky */
+.win::before { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 7;
+  box-shadow: inset 0 0 22px rgba(var(--resin-rgb), .22), inset 0 0 0 1px rgba(var(--resin-rgb), .25); opacity: 0; animation: sw-breathe 6.5s ease-in-out .8s infinite; }
+.bigd, .genx { animation: sw-hatch .7s cubic-bezier(.34, 1.56, .64, 1) backwards; }
+@keyframes sw-hatch { 0% { opacity: 0; transform: scale(.82, .6) translateY(-10px); clip-path: circle(0% at 15% 0%); filter: brightness(1.4) sepia(.6) }
+  60% { opacity: 1; clip-path: circle(120% at 15% 0%) } 100% { transform: none; clip-path: circle(150% at 15% 0%); filter: none } }
+@keyframes sw-breathe { 0%, 100% { opacity: 0 } 50% { opacity: 1 } }
+.win:nth-child(2n)::before { animation-delay: 1.6s; } .win:nth-child(3n)::before { animation-delay: 3.1s; }
+
+/* ---------- headers: plates of a carapace with breathing pores ---------- */
+.win-head, .bigd-head, .genx-head { position: relative; background: var(--plates), linear-gradient(180deg, rgba(110, 90, 64, .55), rgba(60, 50, 40, .25)); border-bottom: 1px solid rgba(160, 130, 90, .45); }
+.win-head { border-radius: 24px 9px 0 0 / 18px 7px 0 0; }
+.win-head::after { content: ''; position: absolute; right: 62px; top: 50%; width: 22px; height: 6px; margin-top: -3px; pointer-events: none;
+  background: radial-gradient(circle, rgba(var(--bio-rgb), .9) 1.4px, transparent 2px) 0 0 / 8px 6px repeat-x; animation: sw-pores 3.5s ease-in-out infinite; }
+@keyframes sw-pores { 0%, 100% { opacity: .35 } 50% { opacity: 1; filter: drop-shadow(0 0 3px rgba(var(--bio-rgb), .9)) } }
+.win-title, .bigd-title b, .genx-title b { font-family: "Bahnschrift", "Segoe UI Variable Display", "Segoe UI", sans-serif; font-weight: 600; letter-spacing: .06em; color: #f0e4cc; text-shadow: 0 1px 0 rgba(0, 0, 0, .6); }
+.sec-title { color: #b8a684; }
+.sec > summary::before { content: ''; border: 0; width: 7px; height: 9px; border-radius: 50% 50% 45% 45%; background: linear-gradient(180deg, var(--resin), #6a4c20); box-shadow: 0 0 4px rgba(var(--resin-rgb), .6); transition: transform .3s cubic-bezier(.34, 1.56, .64, 1); }
+.sec[open] > summary::before { transform: rotate(180deg) scale(1.1); }
+
+/* ---------- menu bar ---------- */
+#menubar { background: var(--plates), linear-gradient(180deg, #2d2721, #1d1915); box-shadow: inset 0 -1px 0 rgba(160, 130, 90, .5); }
+#menubar::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(var(--bio-rgb), .8), transparent); background-size: 22% 100%; background-repeat: no-repeat; animation: sw-crawl 9s ease-in-out infinite alternate; }
+@keyframes sw-crawl { from { background-position: -22% 0 } to { background-position: 122% 0 } }
+.brand b { color: var(--resin); }
+.menu-item:hover:not(:disabled) { background: linear-gradient(90deg, rgba(var(--resin-rgb), .28), transparent); }
+
+/* ---------- controls: chitin pills that twitch ---------- */
+button { background: linear-gradient(180deg, #4a3f33, #2e2720 55%, #241e19); border-color: rgba(160, 130, 90, .5); color: #eadfca; border-radius: 12px 5px 12px 5px; box-shadow: inset 0 1px 0 rgba(255, 235, 200, .14), 0 1px 2px rgba(0, 0, 0, .5); }
+button:hover { border-color: var(--resin); box-shadow: inset 0 1px 0 rgba(255, 235, 200, .2), 0 0 10px rgba(var(--resin-rgb), .35); }
+button:active { transform: scale(.96, .92); }
+/* only toolbar and top-bar buttons twitch: rows in windows twitching under the mouse looked jerky */
+#toolbar button:hover, .bar-btn:hover { animation: sw-twitch .35s ease-in-out; }
+@keyframes sw-twitch { 0%, 100% { transform: none } 25% { transform: rotate(-1.2deg) } 50% { transform: rotate(1deg) translateY(-1px) } 75% { transform: rotate(-.6deg) } }
+.swatches button, .ctx-swatches button, .fx-swatches button { border-radius: 50%; }
+button.primary, .bar-btn.on, .genx-chip.on { background: linear-gradient(180deg, #d9a94c, #a87428 60%, #7c541a); border-color: #5c3e12; color: #1d1610; text-shadow: 0 1px 0 rgba(255, 230, 180, .4); box-shadow: inset 0 1px 0 rgba(255, 240, 200, .5), 0 0 14px rgba(var(--resin-rgb), .35); }
+.bar-btn.on .ico { color: #1d1610; }
+.bar-btn .ico, .bigd-tab .ico, .genx-card-ico, .fx-ico, .orbit-ico, .tree-ico { color: var(--resin); }
+.tb.on { background: radial-gradient(ellipse, rgba(var(--resin-rgb), .35), rgba(var(--resin-rgb), .08)); border-color: var(--resin); }
+.bigd-tab.on { background: linear-gradient(90deg, rgba(var(--resin-rgb), .3), transparent); box-shadow: inset 3px 0 0 var(--bio); }
+.field, select, input[type=number] { background: #1a1612; border-color: rgba(160, 130, 90, .4); border-radius: 10px 4px 10px 4px; color: #f0e4cc; }
+.field:focus, select:focus { border-color: var(--bio); box-shadow: 0 0 0 2px rgba(var(--bio-rgb), .25); outline: none; }
+/* the slider is a segmented abdomen, the thumb a little beetle */
+input[type=range] { -webkit-appearance: none; appearance: none; height: 16px; background: radial-gradient(ellipse at center, rgba(180, 150, 100, .55) 45%, transparent 50%) 0 50% / 9px 7px repeat-x; }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 18px; border-radius: 50% 50% 46% 46%; border: 1px solid #3a2a12;
+  background: linear-gradient(90deg, transparent 47%, rgba(0, 0, 0, .55) 47% 53%, transparent 53%), radial-gradient(ellipse at 35% 30%, #f0c46a, #a87428 60%, #4e3410); box-shadow: 0 0 8px rgba(var(--resin-rgb), .6); }
+.pal-row.sel, .poi-row.sel { background: linear-gradient(90deg, rgba(var(--resin-rgb), .3), transparent); border-color: rgba(var(--resin-rgb), .5); box-shadow: inset 3px 0 0 var(--bio); }
+.set-card, .mod-card, .genx-card, .theme-card, .fx-card, .gen-layer, .genx-side-sec { background: var(--veins) 0 0 / 160px 160px, linear-gradient(170deg, #2e2822, #221d18); border-color: rgba(160, 130, 90, .35); border-radius: 18px 7px 18px 7px; }
+.genx-card:hover, .theme-card:hover, .mod-card:hover { border-color: var(--resin); box-shadow: 0 0 14px rgba(var(--resin-rgb), .3); }
+.genx-card.on, .theme-card.on { border-color: var(--bio); box-shadow: 0 0 0 1px var(--bio), 0 0 20px rgba(var(--bio-rgb), .3); }
+
+/* ---------- status, toast, breadcrumbs ---------- */
+#statusbar { background: var(--plates), #1d1915; box-shadow: inset 0 1px 0 rgba(160, 130, 90, .45); }
+#toast { background: linear-gradient(170deg, #3a3129, #241e19); border: 1px solid var(--resin); border-radius: 22px 8px 22px 8px; color: #f0e4cc; box-shadow: 0 0 18px rgba(var(--resin-rgb), .35); }
+#crumbs { background: rgba(36, 31, 26, .92); border-color: rgba(160, 130, 90, .55); }
+.crumb-level { color: var(--bio); }
+.theme-layer.colony { margin-left: 10px; color: var(--bio); font-size: 11px; white-space: nowrap; opacity: .9; }
+
+/* ---------- over the 3D view: hive corners, spores, crawling beetles ---------- */
+.sw-nest { position: absolute; inset: 0; pointer-events: none; z-index: 12; overflow: hidden; }
+.sw-nest .hive { position: absolute; width: 260px; height: 220px; opacity: .22;
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='28' height='48' viewBox='0 0 28 48'><path d='M14 0l14 8v16l-14 8L0 24V8zM14 32v16M0 40l14-8 14 8' fill='none' stroke='%23c9973e' stroke-width='1.2'/></svg>") 0 0 / 28px 48px;
+  -webkit-mask-image: radial-gradient(circle at var(--mx, 0) var(--my, 0), #000, transparent 70%); mask-image: radial-gradient(circle at var(--mx, 0) var(--my, 0), #000, transparent 70%); }
+.sw-nest .hive.bl { left: 0; bottom: 0; --mx: 0%; --my: 100%; } .sw-nest .hive.tr { right: 0; top: 0; --mx: 100%; --my: 0%; }
+.sw-nest .spore { position: absolute; width: 4px; height: 4px; border-radius: 50%; background: radial-gradient(circle, rgba(var(--bio-rgb), .9), transparent 70%); animation: sw-spore linear infinite; }
+@keyframes sw-spore { 0% { transform: translate(0, 0); opacity: 0 } 15% { opacity: .9 } 100% { transform: translate(60px, -40vh); opacity: 0 } }
+.sw-bug { position: absolute; left: 0; top: 0; width: 30px; height: 36px; margin: -18px 0 0 -15px; will-change: transform;
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 26'><g stroke='%232a1f12' stroke-width='1.2' stroke-linecap='round' fill='none'><path d='M5 9L1 6M5 13H0.5M5 17l-4 3M17 9l4-3M17 13h4.5M17 17l4 3M9 3L7 0M13 3l2-3'/></g><ellipse cx='11' cy='5' rx='3.2' ry='2.6' fill='%233d2c18'/><ellipse cx='11' cy='15' rx='6' ry='8.5' fill='%235a4025'/><path d='M11 7v16' stroke='%232a1f12' stroke-width='.9'/><ellipse cx='8.6' cy='12' rx='1.6' ry='3' fill='%23c9a46a' opacity='.45'/></svg>") center / contain no-repeat;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, .6)); }
+.sw-bug.walk { animation: sw-wiggle .18s steps(2) infinite; }
+@keyframes sw-wiggle { 50% { background-position: 50% 46% } }

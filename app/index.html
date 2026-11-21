@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self'; worker-src 'self' blob:">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SSpace</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="splash" role="progressbar" aria-label="Загрузка SSpace">
+  <div class="splash-box">
+    <div class="splash-logo"><span>S</span>Space</div>
+    <div class="splash-sub">редактор гекс-планет</div>
+    <div class="splash-bar"><div class="splash-fill"></div></div>
+    <div class="splash-row"><span class="splash-text">Загрузка…</span><span class="splash-pct">0%</span></div>
+    <div class="splash-log"></div>
+  </div>
+</div>
+<script src="src/splash.js"></script>
+<header id="menubar"></header>
+<div id="workspace">
+  <nav id="toolbar" aria-label="Инструменты"></nav>
+  <main id="viewport">
+    <canvas id="view"></canvas>
+    <div id="spaceLabels"></div>
+    <div id="skyLabels"></div>
+    <div id="poiEdge"></div>
+    <nav id="crumbs" aria-label="Где ты сейчас"></nav>
+    <div id="levelFade"></div>
+    <div id="windows"></div>
+    <div id="zoomCtl">
+      <button id="zIn" title="Приблизить (=)">+</button>
+      <button id="zOut" title="Отдалить (-)">−</button>
+      <button id="zReset" title="Сбросить вид (Home)">⌂</button>
+    </div>
+  </main>
+</div>
+<footer id="statusbar"><span id="stInfo">Загрузка…</span><span id="stHint"></span><span id="stRight"></span><span id="stFps" title="Кадров в секунду"></span></footer>
+<div id="toast" role="status"></div>
+<div id="bootError" hidden></div>
+<script type="module" src="src/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+/* «Просторный интерфейс» — layout only; colours, borders and fonts come from the active theme */
+
+/* big dialogs get more room */
+.wide-ui .bigd:not(.side) { width: min(1380px, 96vw); height: min(900px, 93vh); }
+/* settings-like panes: cards side by side instead of one long column */
+.wide-ui .bigd-pane:has(> .set-card + .set-card) { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); align-items: start; }
+.wide-ui .bigd-pane:has(> .set-card + .set-card) > :not(.set-card) { grid-column: 1 / -1; }
+
+/* windows: once you make one wider, its sections stand in columns */
+.wide-ui .win-body { container-type: inline-size; }
+@container (min-width: 520px) {
+  .win-body { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); align-items: start; column-gap: 0; }
+  .win-body > .note, .win-body > .btnrow, .win-body > .win-wide { grid-column: 1 / -1; }
+  .win-body > .sec { border-right: 1px solid var(--line); }
+}
+
+/* ---------- shared pieces ---------- */
+.wu-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.wu-chip { padding: 4px 11px; border-radius: 999px; font-size: 12px; }
+.wu-chip.on { border-color: var(--accent); background: var(--accent-soft); }
+.wu-cathead .field { width: 100%; font-size: 14.5px; padding: 9px 12px; }
+.wu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px; }
+.wu-card { display: flex; flex-direction: column; align-items: stretch; gap: 5px; padding: 12px; text-align: left; border-radius: 10px; background: var(--card-bg); border: 1px solid var(--line-2); min-height: 112px; }
+.wu-card:hover { border-color: var(--accent); }
+.wu-card.on { border-color: rgba(var(--accent-rgb), .7); background: var(--accent-soft); }
+.wu-card b { font-size: 13.5px; }
+.wu-card small { color: var(--muted); font-size: 11.5px; line-height: 1.35; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; }
+.wu-cardtop { display: flex; align-items: center; justify-content: space-between; }
+.wu-cardico { width: 26px; height: 26px; color: var(--accent); }
+.wu-cols-sw { display: flex; gap: 3px; margin-top: auto; } .wu-cols-sw i { width: 14px; height: 6px; border-radius: 3px; }
+.wu-mini { width: 24px; height: 22px; padding: 0; display: grid; place-items: center; font-size: 13px; background: none; border-color: transparent; color: var(--muted); }
+.wu-mini:hover { color: var(--fg); border-color: var(--line-2); }
+.wu-cols { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 10px; align-items: start; }
+.wu-empty { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+
+/* ---------- Орбита ---------- */
+.wu-orbit { display: grid; grid-template-columns: minmax(300px, 420px) minmax(0, 1fr); gap: 14px; align-items: start; }
+@media (max-width: 1300px) { .bigd.side .wu-orbit { grid-template-columns: 1fr; } }
+.wu-left { display: flex; flex-direction: column; gap: 8px; position: sticky; top: 0; }
+.wu-mapwrap { position: relative; }
+.wu-map { width: 100%; aspect-ratio: 1; display: block; border-radius: 12px; background: radial-gradient(circle, rgba(var(--tint-rgb), .05), transparent 70%), var(--card-bg); border: 1px solid var(--line-2); touch-action: none; }
+.wu-maphint { font-size: 11px; color: var(--muted); margin-top: 4px; }
+.wu-maptip { position: absolute; pointer-events: none; padding: 3px 8px; border-radius: 6px; background: var(--dialog-bg); border: 1px solid var(--line-2); font-size: 11.5px; white-space: nowrap; }
+.wu-olist { display: flex; flex-direction: column; gap: 2px; }
+.wu-orow { display: grid; grid-template-columns: 10px 18px minmax(0, 1fr) auto 24px 24px; align-items: center; gap: 7px; padding: 4px 6px; border-radius: 7px; border: 1px solid transparent; cursor: pointer; font-size: 12.5px; }
+.wu-orow:hover { background: rgba(var(--tint-rgb), .05); }
+.wu-orow.sel { border-color: rgba(var(--accent-rgb), .6); background: var(--accent-soft); }
+.wu-orow.clash .wu-oname { color: var(--warn); }
+.wu-orow.off { opacity: .5; }
+.wu-orow small { color: var(--muted); font-variant-numeric: tabular-nums; }
+.wu-sw { width: 10px; height: 10px; border-radius: 3px; }
+.wu-oico { width: 16px; height: 16px; color: var(--accent); }
+.wu-oname { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.wu-editor { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.wu-edhead { display: flex; gap: 10px; align-items: center; }
+.wu-edhead div { display: flex; flex-direction: column; } .wu-edhead small { color: var(--muted); }
+.wu-edico { width: 30px; height: 30px; color: var(--accent); flex: none; }
+
+/* ---------- Эффекты ---------- */
+.wu-fxgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 10px; align-items: start; }
+.wu-fxhead { display: flex; align-items: center; gap: 8px; }
+.wu-fxhead b { flex: 1; }
+.wu-fxico { width: 20px; height: 20px; color: var(--accent); }
+.wu-fxnote { color: var(--muted); }
+.wu-fxsliders { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 12px; }
+.wu-sw-row { flex-wrap: wrap; }
+
+/* ---------- with the themed themes ---------- */
+[data-theme=machines] .wu-map, [data-theme=machines] .wu-card { border-radius: 0; }
+[data-theme=machines] .wu-map { background: repeating-linear-gradient(0deg, rgba(255, 176, 0, .035) 0 1px, transparent 1px 4px), #0b0b0a; border-color: rgba(255, 176, 0, .45); }
+[data-theme=angels-void] .wu-map { background: radial-gradient(circle, rgba(255, 31, 61, .08), transparent 70%), #050304; border-color: rgba(255, 31, 61, .45); box-shadow: inset 0 0 30px rgba(255, 31, 61, .12); }
+[data-theme=angels-void] .wu-card:hover { box-shadow: 0 0 14px rgba(255, 31, 61, .3); }
+[data-theme=angels] .wu-map { background: radial-gradient(circle, #ffffff, #dfe4ec 70%); border-color: #aab3c1; }
+[data-theme=swarm] .wu-map { border-radius: 46% 54% 50% 50% / 50% 46% 54% 50%; border-width: 2px; border-color: #625646; }
+[data-theme=swarm] .wu-card { border-radius: 14px 6px 14px 6px; }
