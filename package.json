@@ -1,6 +1,6 @@
 {
   "name": "sspace",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "SSpace — 3D-редактор гекс-планет с поддержкой модов",
   "main": "main.js",
   "author": "Maksym Makovskyi (Snvok) (https://github.com/MaksMakovskiy)",

@@ -113,7 +113,7 @@ export function registerShare(ss) {
   const st = {name: '', mods: null, themes: null, theme: true};
   const modRow = (m, set, extra) => {
     const c = check({id: 'shm_' + m.id, label: '', checked: set.has(m.id), onChange: v => { if (v) set.add(m.id); else set.delete(m.id); }});
-    return h('div', {class: 'share-mod'}, c, h('div', {class: 'share-mtext'}, h('b', null, m.name + (m.version ? ' ' + m.version : '')), h('small', null, [extra, m.status === 'on' ? '' : 'выключен'].filter(Boolean).join(' · ') || (m.description || '').slice(0, 110))));
+    return h('div', {class: 'share-mod'}, c, h('div', {class: 'share-mtext'}, h('b', null, m.name + (m.version ? ' ' + m.version : '')), h('small', null, [extra, m.status === 'on' ? '' : 'выключен'].filter(Boolean).join(' · ') || ss.t(m.description || '').slice(0, 110))));
   };
   const nameField = (def) => { const f = h('input', {class: 'field', value: st.name || def, maxlength: 80}); f.addEventListener('input', () => { st.name = f.value; }); return h('div', {class: 'field-row'}, h('label', {class: 'lbl'}, 'Название сборки'), f); };
   const card = (title, ...body) => h('div', {class: 'set-card'}, title ? h('div', {class: 'set-title'}, title) : null, ...body);

@@ -80,7 +80,8 @@ export function createSpaceView(ss) {
       if (L.sector && !showSectors && !L.mark) continue;
       const p = project(L.pos, w, h);
       if (!p.ok || p.x < -60 || p.y < -20 || p.x > w + 60 || p.y > h + 20) continue;
-      const st = styleOf(L), text = st.upper ? L.text.toUpperCase() : L.text;
+      const t0 = L.sector || L.cls.includes('route') ? ss.t(L.text) : L.text; // sector names are the editor's; names of things are yours
+      const st = styleOf(L), text = st.upper ? t0.toUpperCase() : t0;
       c.font = st.font; if ('letterSpacing' in c) c.letterSpacing = st.ls || '0px';
       if (st.box) { const tw = c.measureText(text).width + 12; c.fillStyle = st.box; c.beginPath(); c.roundRect ? c.roundRect(p.x - tw / 2, p.y - 8, tw, 16, 4) : c.rect(p.x - tw / 2, p.y - 8, tw, 16); c.fill(); }
       else { c.strokeStyle = 'rgba(0,0,0,.75)'; c.lineWidth = 3.2; c.strokeText(text, p.x, p.y + 0.5); }

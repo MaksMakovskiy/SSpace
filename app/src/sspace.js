@@ -18,6 +18,7 @@ import {createPois} from './render/pois.js';
 import {createSky} from './render/sky.js';
 import {createInput} from './input.js';
 import {createUI} from './ui/ui.js';
+import {createI18n, defaultLang} from './core/i18n.js';
 import {registerPanels} from './ui/panels.js';
 import {registerMenus} from './ui/menus.js';
 import {registerCoreContent} from './content/core.js';
@@ -27,7 +28,7 @@ import {createParticles} from './render/particles.js';
 import {registerSpacePanels} from './space/spacePanels.js';
 import {CFORMAT, parseCampaign, serializeCampaign, createCampaign, createGalaxy, createSystem, createPlanet, demoCampaign} from './space/campaign.js';
 
-export const VERSION = '0.2.0';
+export const VERSION = '0.3.0';
 const AUTOSAVE_KEY = 'sspace.autosave.v1';     // old single-planet autosave (migrated once)
 const CAMPAIGN_KEY = 'sspace.campaign.v1';
 const PREFS_KEY = 'sspace.prefs.v1';
@@ -43,8 +44,11 @@ export function createSS(THREE) {
   let prefs = {...DEFAULT_PREFS};
   try { prefs = {...prefs, ...JSON.parse(localStorage.getItem(PREFS_KEY) || '{}')}; } catch {}
 
+  // interface language (switching it reloads the window); the dictionary is loaded at boot
+  const i18n = createI18n(prefs.lang || defaultLang());
+  document.documentElement.lang = i18n.lang;
   const ss = {
-    VERSION, THREE, hooks, reg, util, host, prefs, log,
+    VERSION, THREE, hooks, reg, util, host, prefs, log, i18n, t: i18n.t,
     doc: null, mods: [], settings: {},
     editor: {sel: 0, tool: 'brush', radius: 0, layer: 'terrain', markerSel: 0, poiKind: null, poiSel: -1, filePath: null, dirty: false},
     registerPack: (pack, source) => registerPack(ss, pack, source),
@@ -398,6 +402,13 @@ export function createSS(THREE) {
   };
 
   // ---------- boot ----------
+  // switching the language rebuilds the interface: the project is saved and the window reloads
+  ss.setLang = (l) => {
+    if (!l || l === i18n.lang) return;
+    ss.setPref('lang', l);
+    try { if (host.writeAutosaveSync && ss.space && ss.space.campaign) { ss.space.commitPlanet(); host.writeAutosaveSync({text: serializeCampaign(ss.space.campaign), filePath: ss.editor.filePath || ''}); } } catch (e) { console.warn(e); }
+    setTimeout(() => (host.reload ? host.reload() : location.reload()), 50);
+  };
   ss.boot = async () => {
     const S = window.sspaceSplash || {step() {}, done() {}};
     // let the loading screen repaint; a hidden window gets no animation frames, so a timer settles it too
@@ -406,6 +417,17 @@ export function createSS(THREE) {
     const stage = (name) => { const now = performance.now(); ss.metrics.record('boot:' + name, now - stageT); stageT = now; };
     ss.metrics.record('boot:engine', bootT0); // page start → editor code running (loading three.js and modules)
     ss.log.info('boot', `SSpace ${VERSION}: старт`, {ua: navigator.userAgent.split(' ').slice(-2).join(' '), desktop: !!host.desktop});
+    if (i18n.lang !== 'ru') {
+      // the core dictionary and the English help; translation starts at once, so even the loading screen switches
+      try { const r = await fetch(new URL(`./i18n/${i18n.lang}.json`, import.meta.url)); if (r.ok) i18n.add(i18n.lang, await r.json()); } catch (e) { console.warn('[i18n]', e); }
+      try { const r = await fetch(new URL(`./i18n/help.${i18n.lang}.html`, import.meta.url)); if (r.ok) ss.helpHtml = await r.text(); } catch {}
+    }
+    // sector names: «А-1» → «A-1» (rings are lettered)
+    i18n.addRule('en', (s) => { const m = /^([А-Я])-(\d+)$/.exec(s); return m ? String.fromCharCode(65 + m[1].charCodeAt(0) - 1040) + '-' + m[2] : undefined; });
+    // coordinates: «5.9°с 12°в» → «5.9°N 12°E»
+    const SIDE = {'с': 'N', 'ю': 'S', 'в': 'E', 'з': 'W'};
+    i18n.addRule('en', (s) => (/^[\d.,\s°сюзв-]+$/.test(s) && /°[сюзв]/.test(s) ? s.replace(/°([сюзв])/g, (_, c) => '°' + SIDE[c]) : undefined));
+    i18n.start();
     S.step(0.32, 'Ландшафты, эффекты и окна…', `three.js r${THREE.REVISION}`); await tick();
     registerCoreContent(ss);
     registerPanels(ss);

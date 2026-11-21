@@ -40,6 +40,7 @@ export function registerMenus(ss) {
   for (const [v, l, o] of [['show', 'видны', 210], ['half', 'полупрозрачные', 220], ['hide', 'скрыты', 230]]) {
     M({id: 'view:same:' + v, menu: 'Вид', order: o, label: 'Линии внутри типа: ' + l, enabled: onPlanet, checked: () => ss.prefs.sameLines === v, action: () => ss.setPref('sameLines', v)});
   }
+  for (const [l, name, o] of [['ru', 'Русский', 510], ['en', 'English', 511]]) M({id: 'view:lang:' + l, menu: 'Вид', order: o, label: 'Язык: ' + name, checked: () => ss.i18n.lang === l, action: () => ss.setLang(l)});
   M({id: 'view:reset', menu: 'Вид', order: 310, label: 'Сбросить вид', accel: 'Home', action: () => (onPlanet() ? ss.scene.resetView() : ss.space.view.frameAll())});
   M({id: 'view:zin', menu: 'Вид', order: 320, label: 'Приблизить', accel: '=', enabled: onPlanet, action: () => ss.scene.zoomBy(0.8)});
   M({id: 'view:zout', menu: 'Вид', order: 330, label: 'Отдалить', accel: '-', enabled: onPlanet, action: () => ss.scene.zoomBy(1.25)});

@@ -56,6 +56,10 @@ export async function loadMods(ss) {
       if (ss.log) ss.log.warn('mod', `Мод «${rec.name}» не запущен: ${rec.error}`); else console.warn(`[mod ${rec.id}] ${rec.error}`);
       continue;
     }
+    // the mod's own translation (mods/<folder>/i18n/<lang>.json); without one the mod stays in its own language
+    if (ss.i18n && ss.i18n.lang !== 'ru' || (ss.i18n && m.lang && m.lang !== ss.i18n.lang)) {
+      try { const r = await fetch(new URL(`mods/${encodeURIComponent(rec.folder)}/i18n/${ss.i18n.lang}.json`, PROJECT_ROOT)); if (r.ok) { rec.i18n = ss.i18n.add(ss.i18n.lang, await r.json()); } } catch {}
+    }
     try {
       const url = new URL(`mods/${encodeURIComponent(rec.folder)}/${rec.main}`, PROJECT_ROOT).href;
       const mod = await import(url);

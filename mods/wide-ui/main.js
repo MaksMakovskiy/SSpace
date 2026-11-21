@@ -13,7 +13,7 @@ export async function activate(ss, mod) {
   if (ss.orbit) {
     const O = ss.orbit;
     const GROUPS = [['Положение', ['radius', 'outer', 'inner', 'rmin', 'rmax', 'angle', 'lat', 'tilt', 'node', 'gap', 'lanes']], ['Движение', ['spin', 'speed', 'rot', 'climb', 'pulse']]];
-    const groupOf = (id) => { for (const [g, ids] of GROUPS) if (ids.includes(id)) return g; return 'Вид'; };
+    const groupOf = (id) => { for (const [g, ids] of GROUPS) if (ids.includes(id)) return g; return 'Внешний вид'; };
     let selected = null, catQuery = '', catGroup = '';
 
     // ---- the orbit map: seen from above, planet in the middle; drag to move things ----
@@ -69,7 +69,7 @@ export async function activate(ss, mod) {
         }
         return best ? {...best, rr} : null;
       }
-      const nameOf = (it) => it.name || (O.types.get(it.type) || {}).name || it.type;
+      const nameOf = (it) => it.name || ss.t((O.types.get(it.type) || {}).name || it.type);
       cv.addEventListener('pointermove', (e) => {
         if (drag) {
           const g = geom(), r0 = cv.getBoundingClientRect(), x = e.clientX - r0.left - g.cx, y = e.clientY - r0.top - g.cy, rr = Math.hypot(x, y) / g.k;
@@ -116,7 +116,7 @@ export async function activate(ss, mod) {
           card.appendChild(h('label', {class: 'check'}, c, p.name));
         } else card.appendChild(W.slider({id: 'wu_' + p.id, label: p.name, min: p.min, max: p.max, step: p.step || 1, value: it[p.id], format: fmt(p), onChange: v => O.update(it.id, {[p.id]: v})}));
       }
-      for (const g of ['Положение', 'Вид', 'Движение', 'Цвета']) if (groups.has(g)) cols.appendChild(groups.get(g));
+      for (const g of ['Положение', 'Внешний вид', 'Движение', 'Цвета']) if (groups.has(g)) cols.appendChild(groups.get(g));
       const copyOf = () => { const c = {...it}; delete c.id; delete c.auto; delete c.hidden; delete c.fromGen; delete c._seed; return c; };
       box.append(head, cols, h('div', {class: 'btnrow'},
         h('button', {onclick: () => O.add(it.type, {...copyOf(), autoPlace: true})}, 'Копия рядом'),

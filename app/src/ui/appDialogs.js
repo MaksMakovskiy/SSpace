@@ -39,7 +39,10 @@ export function registerAppDialogs(ss, HELP_HTML) {
           ss.reg.themes.has('angels-void') ? pref('themeGlitch', 'Сбои и глитчи', 'трещины, перевороты, консоли и помехи в теме «Ангелы: Сбой»; кнопка с треугольником вверху') : null), grid);
     }},
     {id: 'ui', label: 'Окна и интерфейс', icon: 'window', render(p) {
+      // language: the names stay as they are written, so each is readable whatever language is on now
+      const langSeg = h('div', {class: 'seg'}, (ss.i18n.LANGS || []).map(l => h('button', {class: l.id === ss.i18n.lang ? 'on' : '', 'data-i18n-skip': '', onclick: () => ss.setLang(l.id)}, l.name)));
       p.append(
+        card('Язык / Language', langSeg, note('Моды со своим переводом переключаются вместе с редактором, остальные остаются на своём языке.')),
         card('Плавающие окна', pref('magnet', 'Магнит: окна прилипают к краям и друг к другу', 'Alt при перетаскивании — временно выключить'),
           h('div', {class: 'btnrow'}, button('Сбросить расположение окон', () => { ss.ui.wm.resetLayout(); ss.ui.toast('Окна расставлены заново'); }))),
         card('Строка состояния', pref('fps', 'Счётчик FPS')),
@@ -110,7 +113,7 @@ export function registerAppDialogs(ss, HELP_HTML) {
   // the help text is split into sections by its <details> blocks; lists of ids come from the registries
   const ids = (reg) => ss.reg[reg].ids().map(id => '<code>' + id + '</code>').join(' ');
   const helpSections = () => {
-    const html = HELP_HTML.replace('{{FX}}', ids('effects')).replace('{{TEX}}', ids('textures')).replace('{{BLD}}', ids('buildings'));
+    const html = (ss.helpHtml || HELP_HTML).replace('{{FX}}', ids('effects')).replace('{{TEX}}', ids('textures')).replace('{{BLD}}', ids('buildings'));
     const out = []; const re = /<details[^>]*><summary><span class="sec-title">([^<]+)<\/span><\/summary><div class="sec-body help">([\s\S]*?)<\/div><\/details>/g;
     let m; while ((m = re.exec(html))) out.push({title: m[1], html: m[2]});
     return out;

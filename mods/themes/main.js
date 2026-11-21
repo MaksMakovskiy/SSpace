@@ -288,8 +288,8 @@ export async function activate(ss, mod) {
       };
       const renderLines = (el, info, typing) => {
         el.innerHTML = '';
-        const hd = document.createElement('div'); hd.className = 'hd'; hd.textContent = '> ' + info.head; el.appendChild(hd);
-        const rows = info.lines.map(l => { const d = document.createElement('div'); d.className = 'ln ' + (typeof l === 'string' ? '' : l.cls); d.dataset.t = typeof l === 'string' ? l : l.text; el.appendChild(d); return d; });
+        const hd = document.createElement('div'); hd.className = 'hd'; hd.textContent = '> ' + ss.t(info.head); el.appendChild(hd);
+        const rows = info.lines.map(l => { const d = document.createElement('div'); d.className = 'ln ' + (typeof l === 'string' ? '' : l.cls); d.dataset.t = ss.t(typeof l === 'string' ? l : l.text); el.appendChild(d); return d; });
         if (!typing) { rows.forEach(r => { r.textContent = r.dataset.t; }); return; }
         let i = 0, j = 0;
         const step = () => { if (!el.isConnected || i >= rows.length) { rows.forEach(r => r.classList.remove('cur')); return; }
@@ -309,7 +309,7 @@ export async function activate(ss, mod) {
           return {x: W / 2 + dx * k, y: H / 2 + dy * k, state: 'edge'};
         };
         if (t.kind === 'cell') {
-          if (!ss.view || !ss.view.G || ss.space.nav.level !== 'planet') return null;
+          if (!ss.view || !ss.view.G || ss.space.nav.level !== 'planet' || t.id >= ss.view.G.V) return null; /* the grid may have changed */
           const G = ss.view.G, cam = ss.scene.camera, gm = ss.scene.globe.matrixWorld;
           const v = V3().set(G.centers[t.id * 3], G.centers[t.id * 3 + 1], G.centers[t.id * 3 + 2]).applyMatrix4(gm);
           const c = V3().setFromMatrixPosition(gm), cp = V3().setFromMatrixPosition(cam.matrixWorld);
@@ -341,7 +341,7 @@ export async function activate(ss, mod) {
         for (const c of live) {
           if (!c.box.isConnected) { live.delete(c); continue; }
           const at = locate(c.t);
-          if (!at) { c.box.classList.add('lost'); continue; }
+          if (!at || !isFinite(at.x) || !isFinite(at.y)) { c.box.classList.add('lost'); continue; }
           c.box.classList.toggle('lost', false);
           c.mark.style.left = at.x + 'px'; c.mark.style.top = at.y + 'px';
           c.mark.className = 'mark ' + at.state;
@@ -540,8 +540,10 @@ export async function activate(ss, mod) {
         const read = () => {
           const w = ss.scene && ss.scene.world; if (w) e.setFromQuaternion(w.quaternion, 'YXZ');
           const d = ss.doc, nav = ss.space && ss.space.nav;
-          rl.textContent = `AZ ${deg(e.y)}°  EL ${deg(e.x)}°\nZOOM ${ss.scene ? ss.scene.camera.position.z.toFixed(2) : '-'}\nУРОВЕНЬ ${nav ? lvl[nav.level] || nav.level : '-'}`;
-          rr.textContent = `ОБЪЕКТ ${d && nav && nav.level === 'planet' ? d.name.toUpperCase().slice(0, 18) : '—'}\nЧАСТОТА ${d ? d.n : '-'}  КЛЕТОК ${d ? d.cells.length : '-'}\nТИПОВ ${d ? d.palette.length : '-'}`;
+          // the words go through ss.t one by one, so the line breaks of the readout survive translation
+          const T = ss.t || ((x) => x);
+          rl.textContent = `AZ ${deg(e.y)}°  EL ${deg(e.x)}°\nZOOM ${ss.scene ? ss.scene.camera.position.z.toFixed(2) : '-'}\n${T('УРОВЕНЬ')} ${nav ? T(lvl[nav.level] || nav.level) : '-'}`;
+          rr.textContent = `${T('ОБЪЕКТ')} ${d && nav && nav.level === 'planet' ? d.name.toUpperCase().slice(0, 18) : '—'}\n${T('ЧАСТОТА')} ${d ? d.n : '-'}  ${T('КЛЕТОК')} ${d ? d.cells.length : '-'}\n${T('ТИПОВ')} ${d ? d.palette.length : '-'}`;
         };
         read(); const t = setInterval(read, 200); off.push(() => clearInterval(t));
       }

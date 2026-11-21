@@ -12,9 +12,12 @@ let counter = 0;
 export const uid = (p) => `${p}_${Date.now().toString(36)}${(counter++).toString(36)}${Math.floor(Math.random() * 1296).toString(36)}`;
 
 const SYL = ['ар', 'ве', 'ки', 'ло', 'ми', 'но', 'ра', 'се', 'та', 'ус', 'фа', 'хе', 'це', 'зо', 'ла', 'эр', 'ин', 'ос', 'да', 'ни', 'кс', 'ор', 'ал', 'те'];
+const SYL_EN = ['ar', 've', 'ki', 'lo', 'mi', 'no', 'ra', 'se', 'ta', 'us', 'fa', 'he', 'tse', 'zo', 'la', 'er', 'in', 'os', 'da', 'ni', 'ks', 'or', 'al', 'te'];
 export function randomName(rnd = Math.random, parts = 2) {
   let s = ''; const n = parts + (rnd() < 0.4 ? 1 : 0);
-  for (let i = 0; i < n; i++) s += SYL[Math.floor(rnd() * SYL.length)];
+  // in the English interface new names are made of Latin syllables
+  const syl = typeof document !== 'undefined' && document.documentElement.lang === 'en' ? SYL_EN : SYL;
+  for (let i = 0; i < n; i++) s += syl[Math.floor(rnd() * syl.length)];
   return s[0].toUpperCase() + s.slice(1);
 }
 export const STAR_COLORS = ['#ffe9b0', '#fff4e0', '#ffd27a', '#ff9e5e', '#ff6b4a', '#bcd4ff', '#8fb4ff', '#ffffff'];

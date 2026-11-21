@@ -47,7 +47,7 @@ function appFolder(name, withMods) {
   rm(path.join(out, 'resources', 'default_app.asar'));
   const app = path.join(out, 'resources', 'app');
   fs.mkdirSync(app, {recursive: true});
-  for (const f of ['main.js', 'preload.js', 'LICENSE', 'README.md']) fs.copyFileSync(path.join(ROOT, f), path.join(app, f));
+  for (const f of ['main.js', 'preload.js', 'LICENSE', 'README.md', 'README.ru.md']) fs.copyFileSync(path.join(ROOT, f), path.join(app, f));
   fs.writeFileSync(path.join(app, 'package.json'), JSON.stringify({name: pkg.name, version: VERSION, description: pkg.description, main: 'main.js', author: pkg.author, license: pkg.license}, null, 2));
   copy(path.join(ROOT, 'app'), path.join(app, 'app'));
   copy(path.join(ROOT, 'packs'), path.join(app, 'packs'));
@@ -62,11 +62,17 @@ function appFolder(name, withMods) {
   fs.mkdirSync(mods, {recursive: true});
   if (withMods) for (const m of modList()) copy(path.join(ROOT, 'mods', m.folder), path.join(mods, m.folder), (src) => !path.basename(src).startsWith('.'));
   fs.writeFileSync(path.join(mods, 'index.json'), JSON.stringify(withMods ? modList().map(m => m.folder) : []));
-  fs.writeFileSync(path.join(out, 'ПРОЧТИ.txt'),
-`SSpace ${VERSION} — 3D-редактор вселенных и гекс-планет.
-Запуск: SSpace.exe. Установка не нужна, всё хранится в этой папке и в профиле пользователя.
-${withMods ? 'Внутри уже есть все моды.' : 'Моды не включены. Скачай нужные .sspack со страницы релиза и открой их в SSpace: «Файл → Открыть…».'}
-Лицензия: MIT, © 2026 Maksym Makovskyi (Snvok) — resources/app/LICENSE.
+  fs.writeFileSync(path.join(out, 'README.txt'),
+`SSpace ${VERSION} — a 3D editor of universes and hex planets for tabletop campaigns.
+Run SSpace.exe. No installation needed: everything lives in this folder and in your user profile.
+${withMods ? 'All mods are already included.' : 'No mods included. Download the .sspack files you want from the release page and open them in SSpace: "File > Open...".'}
+Language: English or Russian — Settings > Windows and interface > Language.
+License: MIT, (c) 2026 Maksym Makovskyi (Snvok) — resources/app/LICENSE. Source: https://github.com/MaksMakovskiy/SSpace
+
+SSpace ${VERSION} — 3D-редактор вселенных и гекс-планет для настольных кампаний.
+Запуск: SSpace.exe. Установка не нужна.
+${withMods ? 'Внутри уже есть все моды.' : 'Моды не включены: скачай нужные .sspack со страницы релиза и открой их в SSpace — «Файл → Открыть…».'}
+Язык: русский или английский — «Настройки → Окна и интерфейс → Язык».
 `);
   return out;
 }

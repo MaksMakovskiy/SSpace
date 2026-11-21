@@ -1,0 +1,45 @@
+<details class="sec" open><summary><span class="sec-title">Space: levels</span></summary><div class="sec-body help">
+<p>Universe → Galaxy → Star system → Planet. Bottom centre shows where you are; click a link to go there.</p>
+<p><kbd>Double-click</kbd> or <kbd>Enter</kbd> — go inside · <kbd>Ctrl+↑</kbd> — level up · keep scrolling past the zoom limit and the level changes by itself</p>
+<p><kbd>V</kbd> select and move · <kbd>A</kbd> add · <kbd>L</kbd> route · <kbd>Del</kbd> delete · <kbd>Esc</kbd> cancel · <kbd>RMB</kbd> tilt and turn · drag empty space — pan</p>
+<p>In a galaxy, clicking empty space selects a sector: you can give it a name, a colour and a note.</p>
+<p><kbd>Ctrl+F</kbd> search planets, moons, systems and sectors · right-click → “Mark…” puts a coloured flag on a planet, system or sector.</p>
+</div></details>
+<details class="sec" open><summary><span class="sec-title">Planet controls</span></summary><div class="sec-body help">
+<p><kbd>LMB</kbd> paint · <kbd>RMB</kbd> / <kbd>Shift</kbd>+LMB rotate · wheel — zoom</p>
+<p><kbd>B</kbd> brush · <kbd>F</kbd> fill · <kbd>I</kbd> eyedropper · <kbd>E</kbd> marker eraser · <kbd>P</kbd> point · <kbd>R</kbd> rotate</p>
+<p><kbd>[</kbd> <kbd>]</kbd> brush size · <kbd>1</kbd>–<kbd>9</kbd> palette type · <kbd>M</kbd> layer</p>
+<p><kbd>Space</kbd> stop the day cycle · <kbd>,</kbd> <kbd>.</kbd> phases · <kbd>Del</kbd> delete point</p>
+<p><kbd>Ctrl+Z</kbd> / <kbd>Ctrl+Y</kbd> undo/redo · <kbd>Ctrl+S</kbd> save · <kbd>Ctrl+O</kbd> open · <kbd>Ctrl+1…5</kbd> windows</p>
+</div></details>
+<details class="sec" open><summary><span class="sec-title">Generation, orbit, effects</span></summary><div class="sec-body help">
+<p><kbd>Ctrl+8</kbd> “World generator”: a gallery with previews and search; world settings and add-ons (“Habitability” and others) on the left. Double-click a card to generate at once. <kbd>Ctrl+G</kbd> — another variant with the same settings.</p>
+<p>A new generation clears the orbit and resets effects; the “Keep the orbit and effects as they are” tick in the gallery turns that off. Library types that are not used leave the palette when you generate.</p>
+<p><kbd>Ctrl+6</kbd> “Orbit”: rings, debris, ships, stations, satellites, ring cities · <kbd>Ctrl+7</kbd> “Effects”: snow, ash, rain, swarms… with density, speed and colour.</p>
+<p>“File → Share…” packs a project, mods or themes into one <code>.sspack</code> file; “File → Open…” installs one.</p>
+</div></details>
+<details class="sec" open><summary><span class="sec-title">Sets (no code)</span></summary><div class="sec-body help">
+<p>A JSON file in the <code>packs/</code> folder:</p>
+<pre>{ "format": "sspace-pack", "id": "my", "name": "My set", "version": "1.0.0",
+  "terrains": [ {"id":"moss","name":"Moss","color":"#5a7a3a","h":0.2,"v":0.1,
+                 "fx":"","tex":"grass","bld":"","group":"Swamps"} ],
+  "poiKinds": [ {"id":"cave","sym":"◐","name":"Cave","color":"#c9a"} ] }</pre>
+<p>Effects: {{FX}}</p><p>Surfaces: {{TEX}}</p><p>Buildings: {{BLD}}</p>
+</div></details>
+<details class="sec"><summary><span class="sec-title">Mods (JavaScript)</span></summary><div class="sec-body help">
+<p>A folder in <code>mods/</code> with <code>mod.json</code> and <code>main.js</code>:</p>
+<pre>export function activate(ss, mod) {
+  ss.reg.terrains / effects / textures / buildings / poiKinds
+  ss.reg.generators / genLayers / tools / windows / menus   // .register({id,...})
+  ss.registerPack({...})        // data as in JSON
+  ss.hooks.on('frame', ({dt,t}) => …)
+  ss.hooks.on('cellInfo', (text, c) => text + ' …')   // filter
+  ss.patch(ss.view, 'topR', (orig, c) => orig(c))      // wrap any function
+  ss.particles.forLook('snow', {name, motion: 'fall', …})  // an effect in the “Effects” window
+  ss.orbit.registerType({id, name, params, build})       // an object for the “Orbit” window
+  ss.THREE, ss.scene, ss.view, ss.doc, ss.ui, ss.history
+}</pre>
+<p>Events: <code>frame, doc:loaded, doc:changed, palette:changed, selection:changed, tool:changed, prefs:changed, pois:changed, sky:tick, view:heights, mods:loaded, look:changed, fx:changed, generate:done, orbit:changed, registry:&lt;kind&gt;</code>. Filters: <code>cellInfo</code>.</p>
+<p>Translation: put <code>i18n/en.json</code> (Russian text → English text) into your mod folder; it is loaded automatically. A key with <code>{}</code> is a pattern. Without it your mod stays in its own language.</p>
+<p>Example — <code>mods/example-moon</code>.</p>
+</div></details>
