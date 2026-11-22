@@ -2,7 +2,9 @@
   "id": "radioactive",
   "name": "Радиоактивный мир",
   "version": "1.0.0",
-  "author": "SSpace",
+  "author": "Maksym Makovskyi (Snvok)",
+  "license": "MIT",
+  "homepage": "https://github.com/MaksMakovskiy/SSpace",
   "description": "Выжженная радиацией планета: светящиеся очаги заражения, воронки, кислотные озёра, мёртвые леса и бункеры. Свой эффект «Радиация» и генератор.",
   "main": "main.js",
   "api": 2

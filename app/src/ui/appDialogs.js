@@ -88,7 +88,7 @@ export function registerAppDialogs(ss, HELP_HTML) {
           sw.querySelector('input').addEventListener('change', async (e) => { await setModEnabled(ss, m.id, e.target.checked); restartNeeded = true; banner.hidden = false; });
           grid.appendChild(h('div', {class: 'mod-card ' + st[1]},
             h('div', {class: 'mod-card-top'}, h('b', null, m.name), sw),
-            h('div', {class: 'mod-card-meta'}, h('span', {class: 'pill ' + st[1]}, st[0]), m.version ? h('span', null, 'v' + m.version) : null, m.author ? h('span', null, m.author) : null, m.ms ? h('span', null, m.ms + ' мс') : null),
+            h('div', {class: 'mod-card-meta'}, h('span', {class: 'pill ' + st[1]}, st[0]), m.version ? h('span', null, 'v' + m.version) : null, m.author ? h('span', null, m.author) : null, m.license ? h('span', {class: 'pill', title: 'Лицензия мода'}, m.license) : null, m.ms ? h('span', null, m.ms + ' мс') : null),
             m.description ? h('div', {class: 'mod-card-desc'}, m.description) : null,
             (m.requires && m.requires.length) ? h('div', {class: 'mod-card-req'}, 'Нужны: ' + m.requires.map(d => (ss.mods.find(x => x.id === d) || {name: d}).name).join(', ')) : null,
             (m.optional && m.optional.length) ? h('div', {class: 'mod-card-req muted'}, 'Работает вместе с: ' + m.optional.map(d => (ss.mods.find(x => x.id === d) || {name: d}).name).join(', ')) : null,

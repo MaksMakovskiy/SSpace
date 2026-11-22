@@ -2,7 +2,9 @@
   "id": "winter",
   "name": "Зимний мир",
   "version": "1.0.0",
-  "author": "SSpace",
+  "author": "Maksym Makovskyi (Snvok)",
+  "license": "MIT",
+  "homepage": "https://github.com/MaksMakovskiy/SSpace",
   "description": "Ледяная планета: снежные поля, ледяные щиты, замёрзшие моря с полыньями, заснеженная тайга и ледяные пики. Эффект «Иней» и падающий снег.",
   "main": "main.js",
   "api": 2

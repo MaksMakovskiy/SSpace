@@ -2,7 +2,9 @@
   "id": "example-moon",
   "name": "Пример: Луна и порталы",
   "version": "1.0.0",
-  "author": "SSpace",
+  "author": "Maksym Makovskyi (Snvok)",
+  "license": "MIT",
+  "homepage": "https://github.com/MaksMakovskiy/SSpace",
   "description": "Показывает все способы расширить SSpace: набор ландшафтов, новый вид метки, свою поверхность (GLSL), свой эффект, стиль застройки, инструмент, окно, пункт меню, фильтр и патч функции ядра.",
   "main": "main.js",
   "api": 2

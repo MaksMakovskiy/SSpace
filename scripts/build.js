@@ -36,7 +36,7 @@ function modFiles(folder) {
   walk(base); return out;
 }
 const bundle = (name, mods, extra = {}) => JSON.stringify({format: 'sspace-bundle', version: 1, name, created: new Date().toISOString(), app: 'SSpace ' + VERSION,
-  mods: mods.map(m => ({id: m.id, folder: m.folder, name: m.name, version: m.version, author: m.author, files: modFiles(m.folder)})), ...extra});
+  mods: mods.map(m => ({id: m.id, folder: m.folder, name: m.name, version: m.version, author: m.author, license: m.license, files: modFiles(m.folder)})), ...extra});
 
 function appFolder(name, withMods) {
   const out = path.join(DIST, name);

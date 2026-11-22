@@ -41,7 +41,7 @@ export async function loadMods(ss) {
   for (const m of list) {
     ss.hooks.emit('boot:mod', {i: i++, n: list.length, name: m.name || m.id});
     const rec = {
-      id: m.id, name: m.name || m.id, version: m.version || '', author: m.author || '', description: m.description || '',
+      id: m.id, name: m.name || m.id, version: m.version || '', author: m.author || '', license: m.license || '', description: m.description || '',
       folder: m.folder, main: m.main || 'main.js', enabled: !disabled.has(m.id), status: 'off', error: m.error || null,
       requires: m.requires, optional: m.optional,
     };

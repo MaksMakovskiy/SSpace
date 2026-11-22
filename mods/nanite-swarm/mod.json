@@ -2,7 +2,9 @@
   "id": "nanite-swarm",
   "name": "Нанитовый рой",
   "version": "1.0.0",
-  "author": "SSpace",
+  "author": "Maksym Makovskyi (Snvok)",
+  "license": "MIT",
+  "homepage": "https://github.com/MaksMakovskiy/SSpace",
   "description": "Планету пожирает рой нанитов: живое металлическое море с бегущими ячейками, серая слизь, шпили-сборщики и ядра роя. Часть мира ещё не поглощена. Эффект «Наниты» и облако роя на орбите.",
   "main": "main.js",
   "api": 2

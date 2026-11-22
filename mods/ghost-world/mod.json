@@ -2,7 +2,9 @@
   "id": "ghost-world",
   "name": "Призрачный мир",
   "version": "1.0.0",
-  "author": "SSpace",
+  "author": "Maksym Makovskyi (Snvok)",
+  "license": "MIT",
+  "homepage": "https://github.com/MaksMakovskiy/SSpace",
   "description": "Аномальная полупрозрачная голубая планета: эффект «Призрак» (мерцание, свечение краёв, бегущие полосы), призрачные ландшафты и генератор, который делает поверхность прозрачной.",
   "main": "main.js",
   "api": 2

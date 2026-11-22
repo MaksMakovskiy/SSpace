@@ -174,6 +174,10 @@ and/or themes. A single planet file or an old “Hex Planet” file opens into t
 
 © 2026 Maksym Makovskyi (Snvok, [GitHub](https://github.com/MaksMakovskiy)). Released under the MIT License — see [LICENSE](LICENSE).
 
+This covers SSpace itself **and every mod made for it in this repository** (the `mods/` folder): each mod also
+carries its own `LICENSE` file and `"license": "MIT"` in its `mod.json`, so the licence travels with a mod even
+when it is downloaded or shared on its own as a `.sspack` file.
+
 In short: you may use, copy, modify, embed and distribute SSpace and its mods, including commercially. The only
 condition is to keep the author notice (“Copyright (c) 2026 Maksym Makovskyi (Snvok)”) and the license text in all
-copies and derivatives. The software is provided “as is”, without warranty.
+copies and derivatives — including modified versions of the mods. The software is provided “as is”, without warranty.

@@ -2,7 +2,9 @@
   "id": "ocean-world",
   "name": "Океанический мир",
   "version": "1.0.0",
-  "author": "SSpace",
+  "author": "Maksym Makovskyi (Snvok)",
+  "license": "MIT",
+  "homepage": "https://github.com/MaksMakovskiy/SSpace",
   "description": "Планета-океан: бездна, ламинариевые леса, лагуны, атоллы и острова. Генератор с выбором числа и размера островов и доли рифов.",
   "main": "main.js",
   "api": 2

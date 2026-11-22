@@ -38,7 +38,7 @@ export function registerShare(ss) {
       const m = (ss.mods || []).find(x => x.id === id); if (!m) continue;
       const r = await host.readModFiles(m.folder);
       if (!r || r.error) throw new Error(`мод «${m.name}»: ${(r && r.error) || 'не прочитался'}`);
-      out.push({id: m.id, folder: m.folder, name: m.name, version: m.version, author: m.author, files: r.files});
+      out.push({id: m.id, folder: m.folder, name: m.name, version: m.version, author: m.author, license: m.license, files: r.files});
     }
     return out;
   }
