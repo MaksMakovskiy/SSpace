@@ -35,7 +35,7 @@ function modFiles(folder) {
   } };
   walk(base); return out;
 }
-const bundle = (name, mods, extra = {}) => JSON.stringify({format: 'sspace-bundle', version: 1, name, created: new Date().toISOString(), app: 'SSpace ' + VERSION,
+const bundle = (name, mods, extra = {}) => JSON.stringify({format: 'sspace-bundle', version: 1, name, created: new Date().toISOString(), app: 'SSpace ' + VERSION, license: 'MIT, (c) 2026 Maksym Makovskyi (Snvok) — https://github.com/MaksMakovskiy/SSpace',
   mods: mods.map(m => ({id: m.id, folder: m.folder, name: m.name, version: m.version, author: m.author, license: m.license, files: modFiles(m.folder)})), ...extra});
 
 function appFolder(name, withMods) {

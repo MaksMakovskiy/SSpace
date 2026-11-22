@@ -1,3 +1,4 @@
+// SSpace themes — (c) 2026 Maksym Makovskyi (Snvok), MIT License (see LICENSE), https://github.com/MaksMakovskiy/SSpace
 // Themes: colours, fonts, icons and little touches of the interface. Pick one in «Настройки → Тема».
 //   Светлая · Полночь · Ангелы · Машины · Эмодзи   (the built-in «Космос» stays the default)
 export async function activate(ss, mod) {
